@@ -3,8 +3,8 @@ import { durationDefault } from '@/types/time';
 
 export interface TransitionProps {
 	el?: HTMLElement | null,
-	duration: number,
-	from: BoxPosition,
+	duration?: number,
+	from?: BoxPosition,
 }
 
 export function showElement ({
