@@ -15,10 +15,11 @@ export function showElement (el?: HTMLElement | null, {
 	}
 
 	const vertical = from === 'top' || from === 'bottom';
-	const { scrollHeight, scrollWidth } = el;
 
 	el.style.display = '';
 	requestAnimationFrame(() => {
+		const { scrollHeight, scrollWidth } = el;
+
 		if (vertical) {
 			el.style.height = `${scrollHeight}px`;
 		} else {
