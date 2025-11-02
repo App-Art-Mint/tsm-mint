@@ -5,7 +5,6 @@ export interface ElementEvents {
 }
 
 export abstract class AttachesEvents {
-
 	events: ElementEvents[] = [];
 
 	attachEvent(element: HTMLElement | Window | null | undefined, event: string, handler: EventListener) : void {
