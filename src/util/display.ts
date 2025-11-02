@@ -2,16 +2,14 @@ import { type BoxPosition, boxPositions } from '@/types/box';
 import { durationDefault } from '@/types/time';
 
 export interface TransitionProps {
-	el?: HTMLElement | null,
 	duration?: number,
 	from?: BoxPosition,
 }
 
-export function showElement ({
-	el,
+export function showElement (el?: HTMLElement | null, {
 	duration = durationDefault,
 	from = boxPositions[0],
-}: TransitionProps) : void {
+}: TransitionProps = {}) : void {
 	if (!el) {
 		return;
 	}
@@ -37,11 +35,10 @@ export function showElement ({
 	});
 }
 
-export function hideElement ({
-	el,
+export function hideElement (el?: HTMLElement | null, {
 	duration = durationDefault,
 	from = boxPositions[0],
-}: TransitionProps) : void {
+}: TransitionProps = {}) : void {
 	if (!el) {
 		return;
 	}
