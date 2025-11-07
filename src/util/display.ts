@@ -1,14 +1,14 @@
-import { type BoxPosition, boxPositions } from '@/types/box';
-import { durationDefault } from '@/types/time';
+import { type Side, sides } from '@/types/side';
+import { delay } from '@/types/time';
 
 export interface TransitionProps {
 	duration?: number,
-	from?: BoxPosition,
+	from?: Side,
 }
 
 export function showElement (el?: HTMLElement | null, {
-	duration = durationDefault,
-	from = boxPositions[0],
+	duration = delay.default,
+	from = sides[0],
 }: TransitionProps = {}) : void {
 	if (!el) {
 		return;
@@ -37,8 +37,8 @@ export function showElement (el?: HTMLElement | null, {
 }
 
 export function hideElement (el?: HTMLElement | null, {
-	duration = durationDefault,
-	from = boxPositions[0],
+	duration = delay.default,
+	from = sides[0],
 }: TransitionProps = {}) : void {
 	if (!el) {
 		return;

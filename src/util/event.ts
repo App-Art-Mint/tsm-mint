@@ -1,6 +1,6 @@
-import { durationDefault } from '@/types/time';
+import { delay } from '@/types/time';
 
-export function debounce<T extends (...args: Parameters<T>) => ReturnType<T>>(func: T, wait: number = durationDefault) : (...args: Parameters<T>) => void {
+export function debounce<T extends (...args: Parameters<T>) => ReturnType<T>>(func: T, wait: number = delay.default) : (...args: Parameters<T>) => void {
 	let timer: number;
 	return function (...args: Parameters<T>) : void {
 		if (timer) {
@@ -10,13 +10,13 @@ export function debounce<T extends (...args: Parameters<T>) => ReturnType<T>>(fu
 	}
 }
 
-export function debounceEvent<T extends (e: Event) => ReturnType<T>>(func: T, wait: number = durationDefault) : EventListener {
+export function debounceEvent<T extends (e: Event) => ReturnType<T>>(func: T, wait: number = delay.default) : EventListener {
     return debounce(func, wait) as EventListener;
 }
 
 export function throttle (
 	func: Function,
-	wait: number = durationDefault,
+	wait: number = delay.default,
 	options?: {[key: string]: boolean},
 ) : Function {
 	let context: any, args: any, result: any,
@@ -58,7 +58,7 @@ export function throttle (
 
 export function throttleEvent (
 	func: Function,
-	wait: number = durationDefault,
+	wait: number = delay.default,
 	options?: {[key: string]: boolean},
 ) : EventListener {
 	return throttle(func, wait, options) as EventListener;

@@ -15,7 +15,7 @@ export default defineConfig({
 	},
 	build: {
 		lib: {
-			entry: 'src/index.ts',
+			entry: 'src',
 			formats: ['es', 'cjs'],
 			name: 'tsm-mint',
 			fileName: (format) => `index.${format}.js`

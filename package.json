@@ -1,69 +1,60 @@
 {
-  "name": "@appartmint/tsm-mint",
-  "author": "App Art Mint LLC",
-  "version": "0.0.6",
-  "license": "MIT",
-  "description": "TypeScript Modules from App Art Mint LLC",
-  "keywords": [
-    "typescript",
-    "modules",
-    "app art mint",
-    "appartmint"
-  ],
-  "homepage": "https://github.com/App-Art-Mint/tsm-mint#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/App-Art-Mint/tsm-mint.git"
-  },
-  "bugs": {
-    "url": "https://github.com/App-Art-Mint/tsm-mint/issues"
-  },
-  "type": "module",
-  "module": "dist/index.es.js",
-  "main": "dist/index.cjs.js",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.cjs.js",
-      "default": "./dist/index.es.js"
-    },
-    "./*": {
-      "types": "./dist/*.d.ts",
-      "import": "./dist/*.es.js",
-      "require": "./dist/*.cjs.js",
-      "default": "./dist/*.es.js"
-    }
-  },
-  "files": [
-    "dist/**/*.{js,d.ts}"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "version": "npm i && git add -A",
-    "postversion": "git push && git push --tags && cross-replace gh release create \"v$npm_package_version\" --generate-notes",
-    "prepare": "run-s build",
-    "build": "run-p test:types build:prod --",
-    "build:prod": "vite build",
-    "clean": "rimraf dist",
-    "test:types": "tsc -b",
-    "test:circular": "madge --circular --extensions ts .",
-    "lint": "eslint --fix ."
-  },
-  "devDependencies": {
-    "@types/node": "^24.9.2",
-    "cross-replace": "^0.2.0",
-    "eslint": "^9.39.0",
-    "glob": "^11.0.3",
-    "madge": "^8.0.0",
-    "npm-run-all2": "^8.0.4",
-    "rimraf": "^6.1.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.2",
-    "vite": "^6.4.1",
-    "vite-plugin-dts": "^4.5.4"
-  }
+	"name": "@appartmint/tsm-mint",
+	"author": "App Art Mint LLC",
+	"version": "0.1.0",
+	"type": "module",
+	"license": "MIT",
+	"description": "TypeScript Modules from App Art Mint LLC",
+	"keywords": [
+		"typescript",
+		"modules",
+		"app art mint",
+		"appartmint"
+	],
+	"homepage": "https://github.com/App-Art-Mint/tsm-mint#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/App-Art-Mint/tsm-mint.git"
+	},
+	"bugs": {
+		"url": "https://github.com/App-Art-Mint/tsm-mint/issues"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"dist/**/*.{js,d.ts}"
+	],
+	"exports": {
+		"./*": {
+			"types": "./dist/*.d.ts",
+			"import": "./dist/*.es.js",
+			"require": "./dist/*.cjs.js",
+			"default": "./dist/*.es.js"
+		}
+	},
+	"scripts": {
+		"version": "npm i && git add -A",
+		"postversion": "git push && git push --tags && cross-replace gh release create \"v$npm_package_version\" --generate-notes",
+		"prepare": "run-s build",
+		"build": "run-p test:types build:prod",
+		"build:prod": "vite build",
+		"clean": "rimraf dist",
+		"test:types": "tsc -b",
+		"test:circular": "madge --circular --extensions ts .",
+		"lint": "eslint --fix ."
+	},
+	"devDependencies": {
+		"@types/node": "^24.9.2",
+		"cross-replace": "^0.2.0",
+		"eslint": "^9.39.0",
+		"glob": "^11.0.3",
+		"madge": "^8.0.0",
+		"npm-run-all2": "^8.0.4",
+		"rimraf": "^6.1.0",
+		"typescript": "^5.9.3",
+		"typescript-eslint": "^8.46.2",
+		"vite": "^6.4.1",
+		"vite-plugin-dts": "^4.5.4"
+	}
 }
