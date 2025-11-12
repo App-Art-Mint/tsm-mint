@@ -17,6 +17,7 @@ export class Header {
 
 	constructor(settings?: { [key: string]: any }) {
 		this.settings = { ...this.settings, ...settings };
+		console.log('header settings', this.settings);
 
 		this.panel = new Panel(this.settings);
 		this.menu = new Menu(this.settings);
