@@ -19,7 +19,6 @@ export class Panel extends AttachesEvents {
     constructor (settings?: Record<string, any>) {
         super();
         this.settings = {...this.settings, ...settings};
-        console.log('panel settings', this.settings);
 
 		if (!this.settings.id || !this.settings.wrapperId) {
 			throw new Error('Panel ID and wrapper ID are required');
