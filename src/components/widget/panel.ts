@@ -63,12 +63,8 @@ export class Panel extends AttachesEvents {
 		this.el.toggleButton?.classList.add('mint-panel-toggle');
 
 		if (this.settings.from) {
-            console.log(this.settings.from);
-            console.log(sides[this.settings.from]);
-            console.log(sides[this.settings.from]?.toLowerCase());
-            console.log(`mint-${sides[this.settings.from]?.toLowerCase()}`);
 			this.el.panel?.classList.remove('mint-top', 'mint-right', 'mint-bottom', 'mint-left');
-			this.el.panel?.classList.add(`mint-${sides[this.settings.from]?.toLowerCase()}`);
+			this.el.panel?.classList.add(`mint-${this.settings.from.toLowerCase()}`);
 		}
 
         if (this.settings.tray) {
