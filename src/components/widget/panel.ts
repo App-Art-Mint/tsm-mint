@@ -59,7 +59,7 @@ export class Panel extends AttachesEvents {
 
     addClasses () : void {
 		this.el.panel?.classList.add('mint-panel');
-		this.el.wrapper?.classList.add('mint-panel-wrapper');
+		this.el.wrapper?.classList.add('mint-panel-wrap');
 		this.el.toggleButton?.classList.add('mint-panel-toggle');
 
 		if (this.settings.from) {
