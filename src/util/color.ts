@@ -41,4 +41,3 @@ export function getLuminanceRGBA ({r, g, b, a}: RGBA) : number {
     }
     return -1;
 }
-
