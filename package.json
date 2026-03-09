@@ -1,7 +1,7 @@
 {
 	"name": "@appartmint/tsm-mint",
 	"author": "App Art Mint LLC",
-	"version": "0.1.12",
+	"version": "0.1.13",
 	"type": "module",
 	"license": "MIT",
 	"description": "TypeScript Modules from App Art Mint LLC",
@@ -43,7 +43,8 @@
 		"test:types": "tsc -b",
 		"test:circular": "madge --circular --extensions ts .",
 		"lint": "eslint --fix .",
-		"publish:link": "yalc publish"
+		"publish:link": "yalc publish",
+		"check:updates": "npm-check-updates"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
