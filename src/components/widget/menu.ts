@@ -45,8 +45,8 @@ export class Menu extends AttachesEvents {
     }
 
     setMenu (button?: HTMLElement | null,
-             open: boolean = false) : void {
-        let ariaExpanded: string = open ? 'true' : 'false',
+             open = false) : void {
+        const ariaExpanded: string = open ? 'true' : 'false',
             menu: HTMLElement | null = button?.nextElementSibling as HTMLElement | null;
         if (button && menu) {
             button.setAttribute('aria-expanded', ariaExpanded);
@@ -64,8 +64,8 @@ export class Menu extends AttachesEvents {
     }
 
     closeSubMenus (button?: HTMLElement | null) : void {
-        let menu: HTMLElement | null | undefined = button?.nextElementSibling as HTMLElement,
-            subMenus: NodeListOf<HTMLElement> = menu?.querySelectorAll(subMenuButtons) as NodeListOf<HTMLElement>;
+        const menu: HTMLElement | null | undefined = button?.nextElementSibling as HTMLElement,
+            subMenus: NodeListOf<HTMLElement> = menu?.querySelectorAll(subMenuButtons);
         subMenus.forEach((child: HTMLElement) => {
             // setMenu calls this function, so ignore subsub menus
             if (child.parentElement?.parentElement === menu) {
@@ -75,8 +75,8 @@ export class Menu extends AttachesEvents {
     }
 
     closeSiblingMenus (button?: HTMLElement | null) : void {
-        let menu: HTMLElement | null | undefined = button?.parentElement as HTMLElement,
-            siblingMenus: NodeListOf<HTMLElement> = menu?.parentElement?.querySelectorAll(subMenuButtons) as NodeListOf<HTMLElement>;
+        const menu: HTMLElement | null | undefined = button?.parentElement,
+            siblingMenus: NodeListOf<HTMLElement> = menu?.parentElement?.querySelectorAll(subMenuButtons)!;
         siblingMenus.forEach((child: HTMLElement) => {
             if (child !== button) {
                 this.setMenu(child);
@@ -85,7 +85,7 @@ export class Menu extends AttachesEvents {
     }
 
     closeAllMenus () : void {
-        let menuButtons: NodeListOf<HTMLElement> | undefined = this.el.wrapper?.querySelectorAll(subMenuButtons);
+        const menuButtons: NodeListOf<HTMLElement> | undefined = this.el.wrapper?.querySelectorAll(subMenuButtons);
         menuButtons?.forEach((menuButton: HTMLElement) => {
             this.setMenu(menuButton);
         });
@@ -101,7 +101,7 @@ export class Menu extends AttachesEvents {
 
         if (activeButton?.getAttribute('aria-controls') && activeMenu && !showing) {
             activeButton.click();
-            let firstFocusable: HTMLElement | null = activeMenu.querySelector(focusable);
+            const firstFocusable: HTMLElement | null = activeMenu.querySelector(focusable);
             firstFocusable?.focus();
         }
     }
@@ -133,7 +133,7 @@ export class Menu extends AttachesEvents {
     }
 
     eHandleButtonKeypress (e: KeyboardEvent) : void {
-        let target = e.target as HTMLElement | null,
+        const target = e.target as HTMLElement | null,
             subMenu = target?.closest('li');
         switch (e.key.toLowerCase()) {
             case 'escape':
@@ -155,7 +155,7 @@ export class Menu extends AttachesEvents {
     }
 
     eHandleLinkKeypress (e: KeyboardEvent) : void {
-        let target = e.target as HTMLElement | null;
+        const target = e.target as HTMLElement | null;
         switch (e.key.toLowerCase()) {
             case 'escape':
             case 'arrowleft':
@@ -187,7 +187,7 @@ export class Menu extends AttachesEvents {
     }
 
     eToggleMenu (e: MouseEvent) : void {
-        let target = e.target as HTMLElement | null;
+        const target = e.target as HTMLElement | null;
         this.closeSiblingMenus(target);
         this.toggleMenu(target);
     }

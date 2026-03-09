@@ -2,11 +2,11 @@
  * Returns true if the provided objects have the same keys
  */
 export function objectSameKeys (obj1: any, obj2: any) : boolean {
-	let keys: string[] = Object.keys(obj1);
+	const keys: string[] = Object.keys(obj1);
 	if (keys.length !== Object.keys(obj2).length) {
 		return false;
 	}
-	let sameKeys: boolean = true;
+	let sameKeys = true;
 	keys.forEach((key: string) => {
 		if (obj1[key] !== obj2[key]) {
 			sameKeys = false;
@@ -23,7 +23,7 @@ export function objectSameKeys (obj1: any, obj2: any) : boolean {
  * @returns - true if the first object is a superset of the second
  */
 export function objectIsSuperset (superset: any, subset: any) : boolean {
-	let isSuperset: boolean = true;
+	let isSuperset = true;
 	
 	// Base case - if the objects are equal, it is a superset
 	if (superset === subset) {
@@ -104,7 +104,7 @@ export function objectSortValues (object: any, compareFn: (a: any, b: any) => nu
  * @param keys - the keys to keep
  * @returns - the filtered object
  */
-export function objectFilterKeys (object: any, keys: string[]) : Object {
+export function objectFilterKeys (object: any, keys: string[]) : object {
 	return keys.reduce((obj: any, key: string) => {
 		obj[key] = object[key];
 		return obj;
@@ -117,7 +117,7 @@ export function objectFilterKeys (object: any, keys: string[]) : Object {
  * @param values - the values to keep
  * @returns - the filtered object
  */
-export function objectFilterValues (object: any, values: any[]) : Object {
+export function objectFilterValues (object: any, values: any[]) : object {
 	return Object.keys(object).reduce((obj: any, key: string) => {
 		if (values.includes(object[key])) {
 			obj[key] = object[key];
@@ -142,7 +142,7 @@ export function objectUpdateArray (original: any[], update?: any[], key = 'id') 
 	} else {
 
 		// Create a dictionary of the updated objects
-		const updateObjects = update.reduce<{ [key: string]: Object }>((objects, object) => ({
+		const updateObjects = update.reduce<Record<string, object>>((objects, object) => ({
 			...objects,
 			[object?.[key] ?? '']: object
 		}), {});
@@ -187,7 +187,7 @@ export function objectDeepClone<T>(object: T): T {
 	}
 
 	// Track object references to avoid circular references
-	const seen = new WeakMap<object, any>();
+	const seen = new WeakMap();
 
 	// Track clone tasks in a stack
 	type CloneTask = [source: any, clone: any, key?: string | number];

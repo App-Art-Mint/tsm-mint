@@ -3,19 +3,19 @@ import { Menu } from './menu';
 
 export class Header {
 
-	settings: { [key: string]: any } = {
+	settings: Record<string, any> = {
 		id: 'mint-menu',
 		wrapperId: 'mint-wrapper',
 		title: 'menu',
 		fixed: true
 	};
 
-	el: { [key: string]: HTMLElement | null } = {};
+	el: Record<string, HTMLElement | null> = {};
 
 	panel?: Panel;
 	menu?: Menu;
 
-	constructor(settings?: { [key: string]: any }) {
+	constructor(settings?: Record<string, any>) {
 		this.settings = { ...this.settings, ...settings };
 
 		this.panel = new Panel(this.settings);

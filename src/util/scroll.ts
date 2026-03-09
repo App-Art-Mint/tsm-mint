@@ -20,7 +20,7 @@ export function scrollTo(to: number | 'top' | 'bottom'): void {
  */
 export function showElements(): void {
 	requestAnimationFrame(() => {
-		let elements = document.querySelectorAll('.mint-fall-in:not(.mint-show)'),
+		const elements = document.querySelectorAll('.mint-fall-in:not(.mint-show)'),
 			elementsToShow: Element[] = [];
 		for (let i = 0; i < elements.length; i++) {
 			if (elements[i].getBoundingClientRect().top < 0) {

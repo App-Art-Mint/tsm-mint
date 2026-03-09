@@ -5,10 +5,10 @@ export interface RGBA {
     a?: number
 }
 
-const hexBase: number = 16
+const hexBase = 16
 
 export function getLuminance (color: string) : number {
-    const hexMatch = color.match(/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/);
+    const hexMatch = /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.exec(color);
     if (hexMatch) {
         let hex = hexMatch[1];
         if (hex.length === 3) {
@@ -20,7 +20,7 @@ export function getLuminance (color: string) : number {
         return getLuminanceRGBA({ r, g, b });
     }
 
-    const rgbMatch = color.match(/rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)?(?:,\s*(\d(?:\.\d*)?)\s*\))?/);
+    const rgbMatch = /rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)?(?:,\s*(\d(?:\.\d*)?)\s*\))?/.exec(color);
     if (rgbMatch) {
         const r = parseInt(rgbMatch[1]);
         const g = parseInt(rgbMatch[2]);

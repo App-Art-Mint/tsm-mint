@@ -17,10 +17,10 @@ export function debounceEvent<T extends (e: Event) => ReturnType<T>>(func: T, wa
 export function throttle (
 	func: Function,
 	wait: number = delay.default,
-	options?: {[key: string]: boolean},
+	options?: Record<string, boolean>,
 ) : Function {
 	let context: any, args: any, result: any,
-		timeout: number, previous: number = 0,
+		timeout: number, previous = 0,
 		later: Function = function () {
 			previous = options?.leading === false ? 0 : new Date().getTime();
 			timeout = 0;
@@ -30,11 +30,11 @@ export function throttle (
 			}
 		},
 		throttled: Function = function (this: any): any {
-			let now: number = new Date().getTime();
+			const now: number = new Date().getTime();
 			if (!previous && options?.leading === false) {
 				previous = now;
 			}
-			let remaining: number = wait - now + previous;
+			const remaining: number = wait - now + previous;
 			context = this;
 			args = arguments;
 			if (remaining <= 0 || remaining > wait) {
@@ -59,7 +59,7 @@ export function throttle (
 export function throttleEvent (
 	func: Function,
 	wait: number = delay.default,
-	options?: {[key: string]: boolean},
+	options?: Record<string, boolean>,
 ) : EventListener {
 	return throttle(func, wait, options) as EventListener;
 }

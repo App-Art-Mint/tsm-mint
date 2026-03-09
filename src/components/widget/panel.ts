@@ -38,7 +38,7 @@ export class Panel extends AttachesEvents {
 		this.el.main = document.querySelector('main');
         this.el.panel = document.getElementById(this.settings.id);
         this.el.wrapper = document.getElementById(this.settings.wrapperId);
-        this.el.toggleButton = this.el.panel?.querySelector(controls(this.settings.wrapperId)) || null;
+        this.el.toggleButton = this.el.panel?.querySelector(controls(this.settings.wrapperId)) ?? null;
     }
 
     attachEvents () : void {
@@ -47,13 +47,13 @@ export class Panel extends AttachesEvents {
         this.attachEvent(this.el.wrapper, 'transitionend', this.eTransitionEnd.bind(this));
 
         const focusables = getFocusables(this.el.panel);
-        focusables?.forEach(focusable => {
+        focusables.forEach(focusable => {
             this.attachEvent(focusable, 'keydown', throttleEvent(this.eWrapTab.bind(this)));
         });
 
-		const toggleButtons = this.el.panel?.querySelectorAll(controls(this.settings.wrapperId)) as NodeListOf<HTMLElement>;
-		toggleButtons?.forEach(toggleButton => {
-			this.attachEvent(toggleButton, 'click', throttleEvent(this.eToggle.bind(this), delay.slower, { trailing: false }));
+		const toggleButtons = this.el.panel?.querySelectorAll(controls(this.settings.wrapperId))!;
+		toggleButtons.forEach(toggleButton => {
+			this.attachEvent(toggleButton as HTMLElement, 'click', throttleEvent(this.eToggle.bind(this), delay.slower, { trailing: false }));
 		});
     }
 
@@ -72,8 +72,8 @@ export class Panel extends AttachesEvents {
         }
     }
 
-    setPanel (open: boolean = false) : void {
-        let ariaExpanded: string = open ? 'true' : 'false',
+    setPanel (open = false) : void {
+        const ariaExpanded: string = open ? 'true' : 'false',
             ariaLabel: string = open ? `close ${this.settings.title}` : `open ${this.settings.title}`;
 
         this.el.toggleButton?.setAttribute('aria-expanded', ariaExpanded);
@@ -94,8 +94,8 @@ export class Panel extends AttachesEvents {
 
             setTimeout(() => {
                 if (this.el.html) {
-                    let isMobile = windowWidth() <= breakpoints.sm,
-                        overflow = 'auto';
+                    const isMobile = windowWidth() <= breakpoints.sm;
+                    let overflow = 'auto';
 
                     if (this.settings.tray) {
                         if (isMobile) {
@@ -132,8 +132,10 @@ export class Panel extends AttachesEvents {
 
 	closeOtherPanels () : void {
 		const openPanelSelector = `.mint-panel-toggle[aria-expanded="true"]:not([aria-controls="${this.settings.wrapperId}"])`;
-		const toggleBtn = document.querySelector(openPanelSelector) as HTMLButtonElement;
-		toggleBtn?.click();
+		const toggleBtn = document.querySelector(openPanelSelector);
+		if (toggleBtn) {
+            (toggleBtn as HTMLButtonElement).click();
+        }
 	}
 
     eHandleResize () : void {
@@ -169,8 +171,8 @@ export class Panel extends AttachesEvents {
 
     eWrapTab (e: KeyboardEvent) : void {
 		const focusables = getFocusables(this.el.panel);
-		const lastFocusable = focusables?.[focusables?.length - 1];
-		const wrapTab = focusables?.length > 1 && document.activeElement === lastFocusable;
+		const lastFocusable = focusables[focusables.length - 1];
+		const wrapTab = focusables.length > 1 && document.activeElement === lastFocusable;
 		const isTab = e.key.toLowerCase() === 'tab' && !e.shiftKey;
 
         if (isTab && wrapTab) {

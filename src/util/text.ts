@@ -1,7 +1,7 @@
 /**
  * Shorten a string to the given length
  */
-export function truncate (text: string, length: number = 100): string {
+export function truncate (text: string, length = 100): string {
 	return text.length > length ? text.slice(0, length).trim() + '...' : text;
 }
 
@@ -115,7 +115,7 @@ export function titleCase (text: string): string {
  * @returns - true if the text was successfully copied to the clipboard; else false
  */
 export function copyText (text: string) : boolean {
-	let textArea: HTMLTextAreaElement = document.createElement('textarea');
+	const textArea: HTMLTextAreaElement = document.createElement('textarea');
 
 	if (!text || !textArea) {
 		return false;
@@ -147,13 +147,13 @@ export function copyText (text: string) : boolean {
  * @returns - true if the given string is an email address; false if not
  */
 export function isEmail (text: string) : boolean {
-	return null !== text.match(/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/);
+	return null !== (/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.exec(text));
 }
 
 /**
  * Generate a random string [a-z0-9]
  */
-export function generateId(length: number = 10): string {
+export function generateId(length = 10): string {
 	return Math.random().toString(36).substring(2, length + 2);
 }
 

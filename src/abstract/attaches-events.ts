@@ -9,7 +9,7 @@ export abstract class AttachesEvents {
 
 	attachEvent(element: HTMLElement | Window | null | undefined, event: string, handler: EventListener) : void {
 		if (element) {
-			let oldElement = this.events.find(e => e.el === element);
+			const oldElement = this.events.find(e => e.el === element);
 			if (oldElement) {
 				oldElement.handlers.push(handler);
 				oldElement.events.push(event);
