@@ -1,7 +1,7 @@
 {
 	"name": "@appartmint/tsm-mint",
 	"author": "App Art Mint LLC",
-	"version": "0.1.10",
+	"version": "0.1.11",
 	"type": "module",
 	"license": "MIT",
 	"description": "TypeScript Modules from App Art Mint LLC",
@@ -50,6 +50,7 @@
 		"eslint": "^9.39.0",
 		"glob": "^11.0.3",
 		"madge": "^8.0.0",
+		"npm-check-updates": "^19.6.3",
 		"npm-run-all2": "^8.0.4",
 		"rimraf": "^6.1.0",
 		"typescript": "^5.9.3",
