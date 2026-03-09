@@ -1,7 +1,7 @@
 {
 	"name": "@appartmint/tsm-mint",
 	"author": "App Art Mint LLC",
-	"version": "0.1.11",
+	"version": "0.1.12",
 	"type": "module",
 	"license": "MIT",
 	"description": "TypeScript Modules from App Art Mint LLC",
@@ -42,20 +42,24 @@
 		"clean": "rimraf dist",
 		"test:types": "tsc -b",
 		"test:circular": "madge --circular --extensions ts .",
-		"lint": "eslint --fix ."
+		"lint": "eslint --fix .",
+		"publish:link": "yalc publish"
 	},
 	"devDependencies": {
-		"@types/node": "^24.9.2",
+		"@eslint/js": "^10.0.1",
+		"@types/node": "^25.4.0",
 		"cross-replace": "^0.2.0",
-		"eslint": "^9.39.0",
-		"glob": "^11.0.3",
+		"eslint": "^10.0.3",
+		"glob": "^13.0.6",
+		"globals": "^17.4.0",
 		"madge": "^8.0.0",
 		"npm-check-updates": "^19.6.3",
 		"npm-run-all2": "^8.0.4",
-		"rimraf": "^6.1.0",
+		"rimraf": "^6.1.3",
 		"typescript": "^5.9.3",
-		"typescript-eslint": "^8.46.2",
-		"vite": "^6.4.1",
-		"vite-plugin-dts": "^4.5.4"
+		"typescript-eslint": "^8.57.0",
+		"vite": "^7.3.1",
+		"vite-plugin-dts": "^4.5.4",
+		"yalc": "^1.0.0-pre.53"
 	}
 }
