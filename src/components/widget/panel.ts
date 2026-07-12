@@ -8,7 +8,7 @@ import { controls, getFocusables } from '@/util/selectors';
 
 export class Panel extends AttachesEvents {
 
-    settings: Record<string, any> = {
+    settings: Record<string, unknown> = {
 		title: 'panel',
         from: sides[0],
         fixed: true
@@ -16,7 +16,7 @@ export class Panel extends AttachesEvents {
 
     el: Record<string, HTMLElement | null> = {};
 
-    constructor (settings?: Record<string, any>) {
+    constructor (settings?: Record<string, unknown>) {
         super();
         this.settings = {...this.settings, ...settings};
 
@@ -36,9 +36,9 @@ export class Panel extends AttachesEvents {
     attachElements () : void {
         this.el.html = document.querySelector('html');
 		this.el.main = document.querySelector('main');
-        this.el.panel = document.getElementById(this.settings.id);
-        this.el.wrapper = document.getElementById(this.settings.wrapperId);
-        this.el.toggleButton = this.el.panel?.querySelector(controls(this.settings.wrapperId)) ?? null;
+        this.el.panel = document.getElementById(this.settings.id as string);
+        this.el.wrapper = document.getElementById(this.settings.wrapperId as string);
+        this.el.toggleButton = this.el.panel?.querySelector(controls(this.settings.wrapperId as string)) ?? null;
     }
 
     attachEvents () : void {

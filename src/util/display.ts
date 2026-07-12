@@ -21,9 +21,9 @@ export function showElement (el?: HTMLElement | null, {
 		const { scrollHeight, scrollWidth } = el;
 
 		if (vertical) {
-			el.style.height = `${scrollHeight}px`;
+			el.style.height = `${scrollHeight.toString()}px`;
 		} else {
-			el.style.width = `${scrollWidth}px`;
+			el.style.width = `${scrollWidth.toString()}px`;
 		}
 		
 		setTimeout(() => {
@@ -50,9 +50,9 @@ export function hideElement (el?: HTMLElement | null, {
 	el.style.transition = '';
 	requestAnimationFrame(() => {
 		if (vertical) {
-			el.style.height = `${scrollHeight}px`;
+			el.style.height = `${scrollHeight.toString()}px`;
 		} else {
-			el.style.width = `${scrollWidth}px`;
+			el.style.width = `${scrollWidth.toString()}px`;
 		}
 		
 		el.style.transition = transition;

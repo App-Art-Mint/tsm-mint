@@ -6,7 +6,9 @@ export function debounce<T extends (...args: Parameters<T>) => ReturnType<T>>(fu
 		if (timer) {
 			clearTimeout(timer);
 		}
-		timer = Number(setTimeout(func, wait, ...args));
+		timer = window.setTimeout(() => {
+			func(...args);
+		}, wait);
 	}
 }
 
@@ -14,52 +16,56 @@ export function debounceEvent<T extends (e: Event) => ReturnType<T>>(func: T, wa
     return debounce(func, wait) as EventListener;
 }
 
-export function throttle (
-	func: Function,
+export function throttle<T extends (...args: never[]) => unknown> (
+	func: T,
 	wait: number = delay.default,
 	options?: Record<string, boolean>,
-) : Function {
-	let context: any, args: any, result: any,
-		timeout: number, previous = 0,
-		later: Function = function () {
-			previous = options?.leading === false ? 0 : new Date().getTime();
-			timeout = 0;
-			result = func.apply(context, args);
-			if (!timeout) {
-				context = args = null;
-			}
-		},
-		throttled: Function = function (this: any): any {
-			const now: number = new Date().getTime();
-			if (!previous && options?.leading === false) {
-				previous = now;
-			}
-			const remaining: number = wait - now + previous;
-			context = this;
-			args = arguments;
-			if (remaining <= 0 || remaining > wait) {
-				if (timeout) {
-					clearTimeout(timeout);
-					timeout = 0;
-				}
-				previous = now;
-				result = func.apply(context, args);
-				if (!timeout) {
-					context = args = null;
-				}
-			} else if (!timeout && options?.trailing !== false) {
-				timeout = window.setTimeout(later, remaining);
-			}
-			return result;
-		};
+) : (...args: Parameters<T>) => ReturnType<T> | undefined {
+	let result: ReturnType<T> | undefined;
+	let timeout = 0;
+	let previous = 0;
+	let pendingCall: (() => ReturnType<T>) | null = null;
 
-	return throttled;
+	const later = (): void => {
+		previous = options?.leading === false ? 0 : new Date().getTime();
+		timeout = 0;
+		if (pendingCall) {
+			result = pendingCall();
+		}
+		if (!timeout) {
+			pendingCall = null;
+		}
+	};
+
+	return function (this: ThisParameterType<T>, ...throttleArgs: Parameters<T>): ReturnType<T> | undefined {
+		const now = new Date().getTime();
+		if (!previous && options?.leading === false) {
+			previous = now;
+		}
+		const remaining = wait - now + previous;
+		pendingCall = () => func.apply(this, throttleArgs) as ReturnType<T>;
+
+		if (remaining <= 0 || remaining > wait) {
+			if (timeout) {
+				clearTimeout(timeout);
+				timeout = 0;
+			}
+			previous = now;
+			result = pendingCall();
+			if (!timeout) {
+				pendingCall = null;
+			}
+		} else if (!timeout && options?.trailing !== false) {
+			timeout = window.setTimeout(later, remaining);
+		}
+		return result;
+	};
 }
 
 export function throttleEvent (
-	func: Function,
+	func: (e: Event) => unknown,
 	wait: number = delay.default,
 	options?: Record<string, boolean>,
 ) : EventListener {
-	return throttle(func, wait, options) as EventListener;
+	return throttle(func, wait, options);
 }
