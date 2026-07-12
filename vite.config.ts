@@ -32,7 +32,6 @@ export default defineConfig({
 			),
 			output: {
 				exports: 'named',
-				inlineDynamicImports: false,
 				entryFileNames: '[name].[format].js'
 			},
 		},
