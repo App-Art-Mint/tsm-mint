@@ -172,7 +172,11 @@ export class Menu extends AttachesEvents {
         }
     }
 
-    eHandleKeypress (e: KeyboardEvent) : void {
+    eHandleKeypress (e: Event) : void {
+        if (!(e instanceof KeyboardEvent)) {
+            return;
+        }
+
         if (e.key.toLowerCase() !== 'tab') {
             e.preventDefault();
         }
@@ -187,7 +191,11 @@ export class Menu extends AttachesEvents {
         }
     }
 
-    eToggleMenu (e: MouseEvent) : void {
+    eToggleMenu (e: Event) : void {
+        if (!(e instanceof MouseEvent)) {
+            return;
+        }
+
         const target = e.target as HTMLElement | null;
         this.closeSiblingMenus(target);
         this.toggleMenu(target);

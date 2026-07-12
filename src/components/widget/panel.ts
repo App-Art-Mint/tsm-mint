@@ -51,8 +51,13 @@ export class Panel extends AttachesEvents {
             this.attachEvent(focusable, 'keydown', throttleEvent(this.eWrapTab.bind(this)));
         });
 
-		const toggleButtons = this.el.panel?.querySelectorAll(controls(this.settings.wrapperId))!;
-		toggleButtons.forEach(toggleButton => {
+		const wrapperId = this.settings.wrapperId;
+		if (typeof wrapperId !== 'string') {
+			return;
+		}
+
+		const toggleButtons = this.el.panel?.querySelectorAll(controls(wrapperId));
+		toggleButtons?.forEach(toggleButton => {
 			this.attachEvent(toggleButton as HTMLElement, 'click', throttleEvent(this.eToggle.bind(this), delay.slower, { trailing: false }));
 		});
     }
@@ -62,9 +67,10 @@ export class Panel extends AttachesEvents {
 		this.el.wrapper?.classList.add('mint-panel-wrap');
 		this.el.toggleButton?.classList.add('mint-panel-toggle');
 
-		if (this.settings.from) {
+		const from = this.settings.from;
+		if (typeof from === 'string') {
 			this.el.panel?.classList.remove('mint-top', 'mint-right', 'mint-bottom', 'mint-left');
-			this.el.panel?.classList.add(`mint-${this.settings.from.toLowerCase()}`);
+			this.el.panel?.classList.add(`mint-${from.toLowerCase()}`);
 		}
 
         if (this.settings.tray) {
@@ -73,8 +79,9 @@ export class Panel extends AttachesEvents {
     }
 
     setPanel (open = false) : void {
+		const title = typeof this.settings.title === 'string' ? this.settings.title : 'panel';
         const ariaExpanded: string = open ? 'true' : 'false',
-            ariaLabel: string = open ? `close ${this.settings.title}` : `open ${this.settings.title}`;
+            ariaLabel: string = open ? `close ${title}` : `open ${title}`;
 
         this.el.toggleButton?.setAttribute('aria-expanded', ariaExpanded);
         setTimeout(() => {
@@ -131,7 +138,8 @@ export class Panel extends AttachesEvents {
     }
 
 	closeOtherPanels () : void {
-		const openPanelSelector = `.mint-panel-toggle[aria-expanded="true"]:not([aria-controls="${this.settings.wrapperId}"])`;
+		const wrapperId = typeof this.settings.wrapperId === 'string' ? this.settings.wrapperId : '';
+		const openPanelSelector = `.mint-panel-toggle[aria-expanded="true"]:not([aria-controls="${wrapperId}"])`;
 		const toggleBtn = document.querySelector(openPanelSelector);
 		if (toggleBtn) {
             (toggleBtn as HTMLButtonElement).click();
@@ -169,7 +177,11 @@ export class Panel extends AttachesEvents {
         }
     }
 
-    eWrapTab (e: KeyboardEvent) : void {
+    eWrapTab (e: Event) : void {
+		if (!(e instanceof KeyboardEvent)) {
+			return;
+		}
+
 		const focusables = getFocusables(this.el.panel);
 		const lastFocusable = focusables[focusables.length - 1];
 		const wrapTab = focusables.length > 1 && document.activeElement === lastFocusable;
