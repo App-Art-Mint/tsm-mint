@@ -141,7 +141,7 @@ export function controls (id?: string | null) : string {
  * @returns - the generated CSS selector
  */
 export function expanded (bool?: boolean | null) : string {
-    return typeof bool === 'boolean' ? `[aria-expanded="${bool}"]` : hasExpanded;
+    return typeof bool === 'boolean' ? `[aria-expanded="${bool ? 'true' : 'false'}"]` : hasExpanded;
 }
 
 /**

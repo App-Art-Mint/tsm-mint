@@ -1,7 +1,7 @@
 /**
  * Returns true if the provided objects have the same keys
  */
-export function objectSameKeys (obj1: any, obj2: any) : boolean {
+export function objectSameKeys (obj1: Record<string, unknown>, obj2: Record<string, unknown>) : boolean {
 	const keys: string[] = Object.keys(obj1);
 	if (keys.length !== Object.keys(obj2).length) {
 		return false;
@@ -22,7 +22,7 @@ export function objectSameKeys (obj1: any, obj2: any) : boolean {
  * @param subset - the object whose entries are required
  * @returns - true if the first object is a superset of the second
  */
-export function objectIsSuperset (superset: any, subset: any) : boolean {
+export function objectIsSuperset (superset: unknown, subset: unknown) : boolean {
 	let isSuperset = true;
 	
 	// Base case - if the objects are equal, it is a superset
@@ -33,7 +33,11 @@ export function objectIsSuperset (superset: any, subset: any) : boolean {
 	// If the subset isn't an object or array, and doesn't
 	// satisfy the base case, it isn't a superset
 	try {
-		if (Object.keys(subset).length === 0) {
+		if (
+			typeof subset === 'object' &&
+			subset !== null &&
+			Object.keys(subset).length === 0
+		) {
 			return !isSuperset;
 		}
 	}
@@ -46,8 +50,12 @@ export function objectIsSuperset (superset: any, subset: any) : boolean {
 
 	// If the children of the subset are subsets of the
 	// respective children of the superset, it is a superset
-	Object.keys(subset).forEach((key: string) => {
-		isSuperset = isSuperset && objectIsSuperset(superset[key], subset[key]);
+	Object.keys(subset as Record<string, unknown>).forEach((key: string) => {
+		isSuperset = isSuperset &&
+			objectIsSuperset(
+				(superset as Record<string, unknown>)[key],
+				(subset as Record<string, unknown>)[key],
+			);
 	});
 	return isSuperset;
 }
@@ -57,8 +65,8 @@ export function objectIsSuperset (superset: any, subset: any) : boolean {
  * @param object - the object to remove entries from
  * @param keys - the keys to remove
  */
-export function removeKeys (object: any, keys: string[]) : any {
-	return Object.keys(object).reduce((obj: any, key: string) => {
+export function removeKeys (object: Record<string, unknown>, keys: string[]) : Record<string, unknown> {
+	return Object.keys(object).reduce((obj: Record<string, unknown>, key: string) => {
 		if (!keys.includes(key)) {
 			obj[key] = object[key];
 		}
@@ -69,8 +77,8 @@ export function removeKeys (object: any, keys: string[]) : any {
 /**
  * Removes object entries by value
  */
-export function objectRemoveValues (object: any, values: any[]) : any {
-	return Object.keys(object).reduce((obj: any, key: string) => {
+export function objectRemoveValues (object: Record<string, unknown>, values: unknown[]) : Record<string, unknown> {
+	return Object.keys(object).reduce((obj: Record<string, unknown>, key: string) => {
 		if (!values.includes(object[key])) {
 			obj[key] = object[key];
 		}
@@ -81,8 +89,8 @@ export function objectRemoveValues (object: any, values: any[]) : any {
 /**
  * Sorts an object's entries alphabetically by key
  */
-export function objectSortKeys (object: any, compareFn?: (a: string, b: string) => number) : any {
-	return Object.keys(object).sort(compareFn).reduce((obj: any, key: string) => {
+export function objectSortKeys (object: Record<string, unknown>, compareFn?: (a: string, b: string) => number) : Record<string, unknown> {
+	return Object.keys(object).sort(compareFn).reduce((obj: Record<string, unknown>, key: string) => {
 		obj[key] = object[key];
 		return obj;
 	}, {});
@@ -91,8 +99,8 @@ export function objectSortKeys (object: any, compareFn?: (a: string, b: string) 
 /**
  * Sorts an object's entries alphabetically by value
  */
-export function objectSortValues (object: any, compareFn: (a: any, b: any) => number) : any {
-	return Object.keys(object).sort((a: string, b: string) => compareFn(object[a], object[b])).reduce((obj: any, key: string) => {
+export function objectSortValues (object: Record<string, unknown>, compareFn: (a: unknown, b: unknown) => number) : Record<string, unknown> {
+	return Object.keys(object).sort((a: string, b: string) => compareFn(object[a], object[b])).reduce((obj: Record<string, unknown>, key: string) => {
 		obj[key] = object[key];
 		return obj;
 	}, {});
@@ -104,8 +112,8 @@ export function objectSortValues (object: any, compareFn: (a: any, b: any) => nu
  * @param keys - the keys to keep
  * @returns - the filtered object
  */
-export function objectFilterKeys (object: any, keys: string[]) : object {
-	return keys.reduce((obj: any, key: string) => {
+export function objectFilterKeys (object: Record<string, unknown>, keys: string[]) : Record<string, unknown> {
+	return keys.reduce((obj: Record<string, unknown>, key: string) => {
 		obj[key] = object[key];
 		return obj;
 	}, {});
@@ -117,8 +125,8 @@ export function objectFilterKeys (object: any, keys: string[]) : object {
  * @param values - the values to keep
  * @returns - the filtered object
  */
-export function objectFilterValues (object: any, values: any[]) : object {
-	return Object.keys(object).reduce((obj: any, key: string) => {
+export function objectFilterValues (object: Record<string, unknown>, values: unknown[]) : Record<string, unknown> {
+	return Object.keys(object).reduce((obj: Record<string, unknown>, key: string) => {
 		if (values.includes(object[key])) {
 			obj[key] = object[key];
 		}
@@ -132,7 +140,7 @@ export function objectFilterValues (object: any, values: any[]) : object {
  * @param update - the object to update the original with
  * @returns - the original objects with updated data from the update
  */
-export function objectUpdateArray (original: any[], update?: any[], key = 'id') : any {
+export function objectUpdateArray (original: Record<string, unknown>[], update?: Record<string, unknown>[], key = 'id') : void {
 	
 	// If there are no originals, push the updates
 	if (!update?.length) {
@@ -142,14 +150,14 @@ export function objectUpdateArray (original: any[], update?: any[], key = 'id') 
 	} else {
 
 		// Create a dictionary of the updated objects
-		const updateObjects = update.reduce<Record<string, object>>((objects, object) => ({
+		const updateObjects = update.reduce<Record<string, unknown>>((objects, object) => ({
 			...objects,
-			[object?.[key] ?? '']: object
+			[(object[key] ?? '') as string]: object
 		}), {});
 
 		// Remove any objects that aren't in the updated objects
-		const missingObjects = original.filter((object) => !updateObjects[object?.[key] ?? '']);
-		missingObjects?.forEach((object) => {
+		const missingObjects = original.filter((object) => !updateObjects[(object[key] ?? '') as string]);
+		missingObjects.forEach((object) => {
 			const index = original.indexOf(object);
 			if (typeof index == 'number' && index !== -1) {
 				original.splice(index, 1);
@@ -158,47 +166,53 @@ export function objectUpdateArray (original: any[], update?: any[], key = 'id') 
 
 		// Update the existing objects with updates
 		original.forEach((object) => {
-			if (updateObjects[object?.[key] ?? '']) {
-				Object.assign(object, updateObjects[object?.[key] ?? '']);
+			if (updateObjects[(object[key] ?? '') as string]) {
+				Object.assign(object, updateObjects[(object[key] ?? '') as string]);
 			}
 		});
 	}
 
 	// Push any new objects
-	const newObjects = update?.filter((object) => !original.some((existingObject) => existingObject?.[key] === object?.[key]));
+	const newObjects = update?.filter((object) => !original.some((existingObject) => existingObject[key] === object[key]));
 	newObjects?.forEach(newObject => original.push(newObject));
 }
 
 /**
  * Get an object's key by value
  */
-export function objectGetKeyByValue(object: any, value: any): string | undefined {
+export function objectGetKeyByValue(object: Record<string, unknown>, value: unknown): string | undefined {
 	return Object.keys(object).find((key) => object[key] === value);
 }
 
 /**
  * Create a deep copy of an object
  */
-export function objectDeepClone<T>(object: T): T {
+export function objectDeepClone<T extends Record<string, unknown>>(object: T): T {
 
 	// Only clone objects
-	if (typeof object !== 'object' || object === null) {
+	if (typeof object !== 'object') {
 		return object;
 	}
 
+	type CloneRecord = Record<string | number, unknown>;
+	type CloneTask = [source: object, clone: CloneRecord, key?: string | number];
+
 	// Track object references to avoid circular references
-	const seen = new WeakMap();
+	const seen = new WeakMap<object, CloneRecord>();
 
 	// Track clone tasks in a stack
-	type CloneTask = [source: any, clone: any, key?: string | number];
-	const stack: CloneTask[] = [[object, Array.isArray(object) ? [] : {}]];
+	const stack: CloneTask[] = [[object, {}]];
 
 	// Run clone tasks
 	while (stack.length) {
-		const [source, clone, key] = stack.pop()!;
+		const cloneTask = stack.pop();
+		if (!cloneTask) {
+			continue;
+		}
+		const [source, clone, key] = cloneTask;
 
 		if (key !== undefined) {
-			const value = source[key];
+			const value = (source as CloneRecord)[key];
 
 			// Bind functions
 			if (typeof value === 'function') {
@@ -219,9 +233,10 @@ export function objectDeepClone<T>(object: T): T {
 			}
 
 			// Object / Array
-			clone[key] = Array.isArray(value) ? [] : {};
-			seen.set(value, clone[key]);
-			stack.push([value, clone[key]]);
+			const nestedClone = (Array.isArray(value) ? [] : {}) as CloneRecord;
+			clone[key] = nestedClone;
+			seen.set(value, nestedClone);
+			stack.push([value, nestedClone]);
 		
 		// No key, process full object
 		} else {

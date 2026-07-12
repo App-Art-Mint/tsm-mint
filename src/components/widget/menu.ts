@@ -6,11 +6,11 @@ import { controls, focusable, subMenu, subMenuButtons } from '@/util/selectors';
 
 export class Menu extends AttachesEvents {
 
-     settings: Record<string, any> = {};
+    settings: Record<string, unknown> = {};
 
     el: Record<string, HTMLElement | null> = {};
 
-    constructor (settings?: Record<string, any>) {
+    constructor (settings?: Record<string, unknown>) {
         super();
         this.settings = {...this.settings, ...settings};
 
@@ -27,7 +27,7 @@ export class Menu extends AttachesEvents {
     }
 
     attachElements () : void {
-        this.el.wrapper = document.getElementById(this.settings.wrapperId);
+        this.el.wrapper = document.getElementById(this.settings.wrapperId as string);
     }
 
     attachEvents () : void {
@@ -65,7 +65,7 @@ export class Menu extends AttachesEvents {
 
     closeSubMenus (button?: HTMLElement | null) : void {
         const menu: HTMLElement | null | undefined = button?.nextElementSibling as HTMLElement,
-            subMenus: NodeListOf<HTMLElement> = menu?.querySelectorAll(subMenuButtons);
+            subMenus: NodeListOf<HTMLElement> = menu.querySelectorAll(subMenuButtons);
         subMenus.forEach((child: HTMLElement) => {
             // setMenu calls this function, so ignore subsub menus
             if (child.parentElement?.parentElement === menu) {
@@ -76,8 +76,8 @@ export class Menu extends AttachesEvents {
 
     closeSiblingMenus (button?: HTMLElement | null) : void {
         const menu: HTMLElement | null | undefined = button?.parentElement,
-            siblingMenus: NodeListOf<HTMLElement> = menu?.parentElement?.querySelectorAll(subMenuButtons)!;
-        siblingMenus.forEach((child: HTMLElement) => {
+            siblingMenus: NodeListOf<HTMLElement> | undefined = menu?.parentElement?.querySelectorAll(subMenuButtons);
+        siblingMenus?.forEach((child: HTMLElement) => {
             if (child !== button) {
                 this.setMenu(child);
             }
@@ -92,9 +92,10 @@ export class Menu extends AttachesEvents {
     }
 
     openClosestMenu () : void {
-        let activeButton = document.activeElement as HTMLElement | null,
-            activeMenu = activeButton?.nextElementSibling as HTMLElement | null,
-            showing = activeButton?.getAttribute('aria-expanded')?.toLowerCase() === 'true';
+        const activeButton = document.activeElement as HTMLElement | null;
+        const showing = activeButton?.getAttribute('aria-expanded')?.toLowerCase() === 'true';
+
+        let activeMenu = activeButton?.nextElementSibling as HTMLElement | null;
         if (activeButton?.getAttribute('aria-controls') === this.settings.wrapperId) {
             activeMenu = this.el.wrapper;
         }
@@ -107,16 +108,16 @@ export class Menu extends AttachesEvents {
     }
 
     closeClosestMenu () : void {
-        let activeElement = document.activeElement as HTMLElement | null,
-            activeMenu = activeElement?.closest(subMenu) as HTMLElement | null,
-            activeButton = activeMenu?.previousElementSibling as HTMLElement | null | undefined;
-        if (activeElement?.getAttribute('aria-controls') && activeElement?.getAttribute('aria-expanded')?.toLowerCase() === 'true') {
+        const activeElement = document.activeElement as HTMLElement | null;
+        const activeMenu = activeElement?.closest(subMenu) as HTMLElement | null;
+        let activeButton = activeMenu?.previousElementSibling as HTMLElement | null | undefined;
+        if (activeElement?.getAttribute('aria-controls') && activeElement.getAttribute('aria-expanded')?.toLowerCase() === 'true') {
             activeButton = activeElement;
         }
 
         if (activeButton?.getAttribute('aria-expanded')?.toLowerCase() === 'true') {
-            activeButton?.click();
-            activeButton?.focus();
+            activeButton.click();
+            activeButton.focus();
         }
     }
 

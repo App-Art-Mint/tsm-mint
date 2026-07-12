@@ -22,11 +22,11 @@ export function showElements(): void {
 	requestAnimationFrame(() => {
 		const elements = document.querySelectorAll('.mint-fall-in:not(.mint-show)'),
 			elementsToShow: Element[] = [];
-		for (let i = 0; i < elements.length; i++) {
-			if (elements[i].getBoundingClientRect().top < 0) {
-				elements[i].classList.add('mint-show');
-			} else if (elements[i].getBoundingClientRect().top < window.innerHeight * 3 / 4) {
-				elementsToShow.push(elements[i]);
+		for (const element of elements) {
+			if (element.getBoundingClientRect().top < 0) {
+				element.classList.add('mint-show');
+			} else if (element.getBoundingClientRect().top < window.innerHeight * 3 / 4) {
+				elementsToShow.push(element);
 			}
 		}
 		for (let i = 0; i < elementsToShow.length; i++) {

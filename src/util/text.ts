@@ -40,15 +40,16 @@ export function formatPhone (phone?: string | number): string {
 		return given;
 	}
 
-	let numbers = given.replace(/\D/g, '') ?? '',
-		formatted = '';
+	let numbers = given.replace(/\D/g, '');
+	let formatted = '';
 
 	if (numbers.length > 10) {
 		formatted += `+${numbers.slice(0, numbers.length - 10)} `;
 		numbers = numbers.slice(numbers.length - 10);
 	}
 
-	for (var i = 0; i < numbers.length; i++) {
+	let i = 0;
+	for (; i < numbers.length; i++) {
 		switch (i) {
 			case 0:
 				formatted += '(';
@@ -114,10 +115,10 @@ export function titleCase (text: string): string {
  * @param text - the text to copy
  * @returns - true if the text was successfully copied to the clipboard; else false
  */
-export function copyText (text: string) : boolean {
+export async function copyText (text: string) : Promise<boolean> {
 	const textArea: HTMLTextAreaElement = document.createElement('textarea');
 
-	if (!text || !textArea) {
+	if (!text) {
 		return false;
 	}
 
@@ -134,7 +135,7 @@ export function copyText (text: string) : boolean {
 	document.body.appendChild(textArea);
 	textArea.select();
 	textArea.setSelectionRange(0, 99999);
-	navigator.clipboard.writeText(textArea.value);
+	await navigator.clipboard.writeText(textArea.value);
 	document.body.removeChild(textArea);
 
 	return true;
@@ -147,6 +148,7 @@ export function copyText (text: string) : boolean {
  * @returns - true if the given string is an email address; false if not
  */
 export function isEmail (text: string) : boolean {
+	// eslint-disable-next-line no-control-regex
 	return null !== (/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.exec(text));
 }
 

@@ -3,7 +3,7 @@ import { Menu } from './menu';
 
 export class Header {
 
-	settings: Record<string, any> = {
+	settings: Record<string, unknown> = {
 		id: 'mint-menu',
 		wrapperId: 'mint-wrapper',
 		title: 'menu',
@@ -15,7 +15,7 @@ export class Header {
 	panel?: Panel;
 	menu?: Menu;
 
-	constructor(settings?: Record<string, any>) {
+	constructor(settings?: Record<string, unknown>) {
 		this.settings = { ...this.settings, ...settings };
 
 		this.panel = new Panel(this.settings);
