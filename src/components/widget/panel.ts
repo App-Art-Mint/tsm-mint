@@ -1,10 +1,10 @@
+import { AttachesEvents } from '@/abstract/attaches-events';
 import { breakpoints } from '@/types/breakpoints';
 import { sides } from '@/types/side';
 import { delay } from '@/types/time';
-import { AttachesEvents } from '@/abstract/attaches-events';
-import { windowWidth } from '@/util/window';
 import { throttleEvent } from '@/util/event';
 import { controls, getFocusables } from '@/util/selectors';
+import { windowWidth } from '@/util/window';
 
 export class Panel extends AttachesEvents {
 

@@ -1,5 +1,5 @@
-import { Panel } from './panel';
 import { Menu } from './menu';
+import { Panel } from './panel';
 
 export class Header {
 

@@ -1,6 +1,6 @@
-import { fileURLToPath, URL } from 'url';
-import { extname, relative } from 'path';
 import { glob } from 'glob';
+import { extname, relative } from 'path';
+import { fileURLToPath, URL } from 'url';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
