@@ -3,8 +3,16 @@ import { breakpoints } from '@/types/breakpoints';
 import { sides } from '@/types/side';
 import { delay } from '@/types/time';
 import { throttleEvent } from '@/util/event';
-import { controls, getFocusables } from '@/util/selectors';
+import { className, controls, expanded, getFocusables, prefix } from '@/util/selectors';
 import { windowWidth } from '@/util/window';
+
+const panelClass = prefix('panel');
+const panelWrapClass = prefix('panel-wrap');
+const panelToggleClass = prefix('panel-toggle');
+const openClass = prefix('open');
+const trayClass = prefix('tray');
+const expandClass = prefix('expand');
+const sideClasses = sides.map((side) => prefix(side));
 
 export class Panel extends AttachesEvents {
 
@@ -63,18 +71,18 @@ export class Panel extends AttachesEvents {
     }
 
     addClasses () : void {
-		this.el.panel?.classList.add('mint-panel');
-		this.el.wrapper?.classList.add('mint-panel-wrapper');
-		this.el.toggleButton?.classList.add('mint-panel-toggle');
+		this.el.panel?.classList.add(panelClass);
+		this.el.wrapper?.classList.add(panelWrapClass);
+		this.el.toggleButton?.classList.add(panelToggleClass);
 
 		const from = this.settings.from;
 		if (typeof from === 'string') {
-			this.el.panel?.classList.remove('mint-top', 'mint-right', 'mint-bottom', 'mint-left');
-			this.el.panel?.classList.add(`mint-${from.toLowerCase()}`);
+			this.el.panel?.classList.remove(...sideClasses);
+			this.el.panel?.classList.add(prefix(from.toLowerCase()));
 		}
 
         if (this.settings.tray) {
-            this.el.panel?.classList.add('mint-tray');
+            this.el.panel?.classList.add(trayClass);
         }
     }
 
@@ -120,7 +128,7 @@ export class Panel extends AttachesEvents {
             }
 
             requestAnimationFrame(() => {
-                this.el.wrapper?.classList.add('mint-open');
+                this.el.wrapper?.classList.add(openClass);
             });
         } else {
             if (this.el.html) {
@@ -128,7 +136,7 @@ export class Panel extends AttachesEvents {
             }            
             
             requestAnimationFrame(() => {
-                this.el.wrapper?.classList.remove('mint-open');
+                this.el.wrapper?.classList.remove(openClass);
             });
         }
     }
@@ -139,7 +147,7 @@ export class Panel extends AttachesEvents {
 
 	closeOtherPanels () : void {
 		const wrapperId = typeof this.settings.wrapperId === 'string' ? this.settings.wrapperId : '';
-		const openPanelSelector = `.mint-panel-toggle[aria-expanded="true"]:not([aria-controls="${wrapperId}"])`;
+		const openPanelSelector = `${className('panel-toggle')}${expanded(true)}:not([aria-controls="${wrapperId}"])`;
 		const toggleBtn = document.querySelector(openPanelSelector);
 		if (toggleBtn) {
             (toggleBtn as HTMLButtonElement).click();
@@ -149,9 +157,9 @@ export class Panel extends AttachesEvents {
     eHandleResize () : void {
 		const isMobile = windowWidth() <= breakpoints.sm;
 		let closeMenu = true;
-		if (this.el.panel?.classList.contains('mint-tray')) {
+		if (this.el.panel?.classList.contains(trayClass)) {
 			closeMenu = false;
-		} else if (!this.el.panel?.classList.contains('mint-expand')) {
+		} else if (!this.el.panel?.classList.contains(expandClass)) {
 			closeMenu = false;
 		}
 		
@@ -204,7 +212,7 @@ export class Panel extends AttachesEvents {
 	}
 
     eTransitionEnd () : void {
-        if (this.el.wrapper?.classList.contains('mint-open') === false ) {
+        if (this.el.wrapper?.classList.contains(openClass) === false ) {
             this.el.wrapper.style.display = 'none';
         }
     }
