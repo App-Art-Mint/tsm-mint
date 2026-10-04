@@ -1,8 +1,10 @@
+import type { Side } from '@appartmint/tsm-types/side';
+
+export type { Side };
+
 export const sides = [
 	'top',
 	'right',
 	'bottom',
 	'left',
-] as const;
-
-export type Side = (typeof sides)[number];
+] as const satisfies readonly Side[];

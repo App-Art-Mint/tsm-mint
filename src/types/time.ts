@@ -1,3 +1,7 @@
+import type { Delay, DelayKey } from '@appartmint/tsm-types/time';
+
+export type { Delay, DelayKey };
+
 export const delayBase = 0 as const;
 export const delayStep = 100 as const;
 export const delay = {
@@ -6,5 +10,5 @@ export const delay = {
 	faster: delayBase + delayStep * 2,
 	default: delayBase + delayStep * 3,
 	slower: delayBase + delayStep * 4,
-	slowest: delayBase + delayStep * 5
+	slowest: delayBase + delayStep * 5,
 } as const;

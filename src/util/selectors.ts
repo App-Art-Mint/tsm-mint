@@ -57,19 +57,19 @@ export const notTabbable = '[tabindex^="-"]' as const;
 /**
  * CSS-selector for elements that are tabbable (i.e. tabindex isn't negative)
  */
-export const tabbable = `[tabindex]${not(notTabbable)}` as const;
+export const tabbable = `[tabindex]:not(${notTabbable})` as const;
 
 /**
  * CSS-selector for elements that can receive focus
  */
 export const focusable =
-    `input${not(disabled)}${not(notTabbable)},
-    select${not(disabled)}${not(notTabbable)},
-    textarea${not(disabled)}${not(notTabbable)},
-    button${not(disabled)}${not(notTabbable)},
-    object${not(disabled)}${not(notTabbable)},
-    a${hasLink}, a${hasRouterLink},
-    area${hasLink}, ${tabbable}`.replace(/\s/g, '');
+	`input:not(${disabled}):not(${notTabbable}),` +
+	`select:not(${disabled}):not(${notTabbable}),` +
+	`textarea:not(${disabled}):not(${notTabbable}),` +
+	`button:not(${disabled}):not(${notTabbable}),` +
+	`object:not(${disabled}):not(${notTabbable}),` +
+	`a${hasLink},a${hasRouterLink},` +
+	`area${hasLink},${tabbable}`;
 
 /**
  * Adds the library prefix to the beginning of the provided string
