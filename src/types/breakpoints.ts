@@ -1,7 +1,5 @@
 import type { Breakpoint, BreakpointKey } from '@appartmint/tsm-types/breakpoints';
 
-export type { Breakpoint, BreakpointKey };
-
 export const breakpoints = {
 	xs: 480,
 	sm: 768,

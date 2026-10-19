@@ -1,4 +1,5 @@
-import { type Side, sides } from '@/types/side';
+import type { Side } from '@appartmint/tsm-types/side';
+import { sides } from '@/types/side';
 import { delay } from '@/types/time';
 
 export interface TransitionProps {
