@@ -196,7 +196,11 @@ export class Menu extends AttachesEvents {
             return;
         }
 
-        const target = e.target as HTMLElement | null;
+        const target = e.currentTarget instanceof HTMLElement
+            ? e.currentTarget
+            : e.target instanceof HTMLElement
+                ? e.target
+                : null;
         this.closeSiblingMenus(target);
         this.toggleMenu(target);
     }
