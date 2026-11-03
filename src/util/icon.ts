@@ -17,7 +17,11 @@ const externalLinkIcon = 'fa-up-right-from-square';
  * @param selector - elements that should receive the icon
  */
 export function appendIcon (icon: string, selector: string): void {
-	const items = document.querySelectorAll<HTMLElement>(selector);
+	const scopedSelector = selector
+		.split(',')
+		.map((part) => `${part.trim()}:not(.mint-icon-ignore, .mint-icon-ignore *)`)
+		.join(', ');
+	const items = document.querySelectorAll<HTMLElement>(scopedSelector);
 	items.forEach((item) => {
 		const iconElement = document.createElement('i');
 		iconElement.classList.add(...icon.split(' '));
