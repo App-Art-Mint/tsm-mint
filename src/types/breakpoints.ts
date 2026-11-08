@@ -6,4 +6,5 @@ export const breakpoints = {
 	md: 1024,
 	lg: 1200,
 	xl: 1440,
+	xxl: 2048,
 } as const satisfies Record<BreakpointKey, Breakpoint>;
