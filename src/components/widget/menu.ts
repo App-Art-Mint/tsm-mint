@@ -4,6 +4,10 @@ import { hideElement, showElement } from '@/util/display';
 import { throttleEvent } from '@/util/event';
 import { controls, focusable, subMenu, subMenuButtons } from '@/util/selectors';
 
+function isMainNavSectionToggle(button: HTMLElement): boolean {
+	return Boolean(button.closest('nav[aria-label="main"]'));
+}
+
 export class Menu extends AttachesEvents {
 
     settings: Record<string, unknown> = {};
@@ -40,12 +44,18 @@ export class Menu extends AttachesEvents {
 
         const menuButtons = this.el.wrapper?.querySelectorAll(controls()) as NodeListOf<HTMLElement> | null;
         menuButtons?.forEach((menuButton) => {
+			if (isMainNavSectionToggle(menuButton)) {
+				return;
+			}
             this.attachEvent(menuButton, 'click', throttleEvent(this.eToggleMenu.bind(this), delay.slower, { trailing: false }));
         });
     }
 
     setMenu (button?: HTMLElement | null,
              open = false) : void {
+		if (button && isMainNavSectionToggle(button)) {
+			return;
+		}
         const ariaExpanded: string = open ? 'true' : 'false',
             menu: HTMLElement | null = button?.nextElementSibling as HTMLElement | null;
         if (button && menu) {
